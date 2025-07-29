@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35514.174
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventarioAPI", "InventarioAPI.csproj", "{55431DA9-6288-40EA-9534-0D2E25B20B7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventarioAPI.Tests", "..\InventarioAPI.Tests\InventarioAPI.Tests.csproj", "{EEA16658-12C3-4BE5-9ACC-310FB971ABCC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{55431DA9-6288-40EA-9534-0D2E25B20B7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55431DA9-6288-40EA-9534-0D2E25B20B7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55431DA9-6288-40EA-9534-0D2E25B20B7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55431DA9-6288-40EA-9534-0D2E25B20B7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEA16658-12C3-4BE5-9ACC-310FB971ABCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEA16658-12C3-4BE5-9ACC-310FB971ABCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEA16658-12C3-4BE5-9ACC-310FB971ABCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEA16658-12C3-4BE5-9ACC-310FB971ABCC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
