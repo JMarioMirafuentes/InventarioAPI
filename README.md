@@ -6,7 +6,7 @@ API REST construida en .NET para gestionar un CRUD de alimentos y bebidas, usand
 - .NET 7.0 / .NET Core
 - Entity Framework Core (InMemory)
 - AutoMapper
-- xUnit y Moq (para pruebas unitarias)
+- xUnit(para pruebas unitarias)
 - Buenas prácticas: separación por capas, inyección de dependencias, excepciones personalizadas, etc.
 
 1. **Clona el repositorio**:
