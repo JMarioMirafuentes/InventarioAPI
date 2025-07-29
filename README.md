@@ -10,7 +10,7 @@ API REST construida en .NET para gestionar un CRUD de alimentos y bebidas, usand
 - Buenas prácticas: separación por capas, inyección de dependencias, excepciones personalizadas, etc.
 
 1. **Clona el repositorio**:
-   git clone https://github.com/tuusuario/InventoryApi.git
+   git clone git@github.com:JMarioMirafuentes/InventarioAPI.git
    cd InventoryApi
 2. Restaura paquetes:
    dotnet restore
