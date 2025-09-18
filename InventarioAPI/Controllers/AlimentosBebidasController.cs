@@ -174,7 +174,7 @@ namespace InventarioAPI.Controllers
         /// </summary>
         /// <param name="idAlimentoBebida">Identificador del alimendo o bebida</param>
         /// <param name="nuevoEstatus">Nuevo estatus del alimento o bebida</param>
-        ///  /// <returns>Resultado del método</returns>
+        /// <returns>Resultado del método</returns>
         [HttpPatch("{idAlimentoBebida}/CambiarEstatus")]
         public async Task<ActionResult<ApiResponse<bool>>> CambiarEstatusAlimentoBebida(int idAlimentoBebida, [FromQuery] bool nuevoEstatus)
         {

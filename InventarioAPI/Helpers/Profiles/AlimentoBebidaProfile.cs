@@ -11,13 +11,9 @@ namespace InventarioAPI.Helpers.Profiles
     {
         public AlimentoBebidaProfile()
         {
-            CreateMap<AlimentoBebida, AlimentoBebidaDTO>()
-                .ForMember(dest => dest.Estatus,
-                    opt => opt.MapFrom(src => src.Estatus == AlimentoBebeidaEstatus.Activo));
+            CreateMap<AlimentoBebida, AlimentoBebidaDTO>().ReverseMap();
 
-            CreateMap<AlimentoBebidaDTO, AlimentoBebida>()
-                .ForMember(dest => dest.Estatus,
-                    opt => opt.MapFrom(src => src.Estatus ? AlimentoBebeidaEstatus.Activo : AlimentoBebeidaEstatus.Inactivo));
+
         }
     }
 }

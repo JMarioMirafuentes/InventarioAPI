@@ -1,4 +1,5 @@
-using InventarioAPI.Data;
+
+using InventarioAPI.Models;
 using InventarioAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,15 +19,17 @@ builder.Services.AddSwaggerGen(c =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 });
 
-builder.Services.AddDbContext<IventarioDbContext>(options =>
-    options.UseInMemoryDatabase("InventarioDb"));
+builder.Services.AddDbContext<InventarioDbContext>(
+        options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
+
+      );
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<IventarioDbContext>();
-    InicializarBD.Initialize(context);
+    var context = services.GetRequiredService<InventarioDbContext>();
+
 }
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

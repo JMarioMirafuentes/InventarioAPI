@@ -12,7 +12,6 @@ namespace InventarioAPI.Dtos
         /// <summary>
         /// Nombre del alimento o bebida
         /// </summary>
-        [Required]
         public string Nombre { get; set; } = null!;
         /// <summary>
         /// Descripción del alimento o bebida

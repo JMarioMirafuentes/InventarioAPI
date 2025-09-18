@@ -3,11 +3,6 @@
     /// <summary>
     /// Enum de los estatus del alimento o bebida
     /// </summary>
-    public enum AlimentoBebeidaEstatus
-    {
-        Inactivo = 0,
-        Activo = 1
-    }
     public class AlimentoBebida
     {
         /// <summary>
@@ -25,6 +20,6 @@
         /// <summary>
         /// Estatus del alimento o bebida
         /// </summary>
-        public AlimentoBebeidaEstatus Estatus { get; set; }
+        public bool Estatus { get; set; }
     }
 }

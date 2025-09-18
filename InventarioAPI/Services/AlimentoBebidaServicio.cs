@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using InventarioAPI.Data;
+
 using InventarioAPI.Dtos;
 using InventarioAPI.Helpers.Exceptions;
 using InventarioAPI.Helpers.Interfaces;
@@ -14,7 +14,7 @@ namespace InventarioAPI.Services
     /// </summary>
     public class AlimentoBebidaServicio : IAlimentoBebida
     {
-        private readonly IventarioDbContext _iventarioDbContext;
+        private readonly InventarioDbContext _inventarioDbContext;
 
         private readonly IMapper _mapper;
         /// <summary>
@@ -22,9 +22,9 @@ namespace InventarioAPI.Services
         /// </summary>
         /// <param name="iventarioDbContext"></param>
         /// <param name="mapper"></param>
-        public AlimentoBebidaServicio(IventarioDbContext iventarioDbContext, IMapper mapper)
+        public AlimentoBebidaServicio(InventarioDbContext inventarioDbContext, IMapper mapper)
         {
-            _iventarioDbContext = iventarioDbContext;
+            _inventarioDbContext = inventarioDbContext;
             _mapper = mapper;
         }
         /// <summary>
@@ -37,14 +37,14 @@ namespace InventarioAPI.Services
             ValidarId(dto.Id);
             if (string.IsNullOrWhiteSpace(dto.Nombre))
                 throw new ValidationException("El nombre es obligatorio.");
-            var entity = await _iventarioDbContext.AlimentosBebidas.FindAsync(dto.Id);
+            var entity = await _inventarioDbContext.AlimentoBebidas.FindAsync(dto.Id);
             if (entity == null) throw new DataNotFoundException("No se encontró el alimento o bebida con el ID especificado.");
 
             entity.Nombre = dto.Nombre;
             entity.Descripcion = dto.Descripcion;
             entity.Estatus = dto.Estatus;
 
-            await _iventarioDbContext.SaveChangesAsync();
+            await _inventarioDbContext.SaveChangesAsync();
             return true;
         }
         /// <summary>
@@ -56,11 +56,11 @@ namespace InventarioAPI.Services
         {
             ValidarId(id);
 
-            var entity = await _iventarioDbContext.AlimentosBebidas.FindAsync(id);
+            var entity = await _inventarioDbContext.AlimentoBebidas.FindAsync(id);
             if (entity == null) throw new DataNotFoundException("No se encontró el alimento o bebida con el ID especificado.");
 
-            _iventarioDbContext.AlimentosBebidas.Remove(entity);
-            await _iventarioDbContext.SaveChangesAsync();
+            _inventarioDbContext.AlimentoBebidas.Remove(entity);
+            await _inventarioDbContext.SaveChangesAsync();
             return true;
         }
         /// <summary>
@@ -76,13 +76,13 @@ namespace InventarioAPI.Services
             if (string.IsNullOrWhiteSpace(dto.Nombre))
                 throw new ValidationException("El campo 'Nombre' es obligatorio y no puede estar vacío.");
 
-            bool exists = await _iventarioDbContext.AlimentosBebidas
+            bool exists = await _inventarioDbContext.AlimentoBebidas
                           .AnyAsync(x => x.Nombre == dto.Nombre || x.Id == dto.Id);
             if (exists)
                 throw new AlreadyExistsException("Ya existe un alimento o bebida registrado con el mismo nombre o ID.");
 
-            _iventarioDbContext.AlimentosBebidas.Add(dto);
-            await _iventarioDbContext.SaveChangesAsync();
+            _inventarioDbContext.AlimentoBebidas.Add(dto);
+            await _inventarioDbContext.SaveChangesAsync();
             return _mapper.Map<AlimentoBebida,AlimentoBebidaDTO>(dto);
         }
         /// <summary>
@@ -94,7 +94,7 @@ namespace InventarioAPI.Services
         {
             ValidarId(id);
 
-            var entity = await _iventarioDbContext.AlimentosBebidas.FindAsync(id);
+            var entity = await _inventarioDbContext.AlimentoBebidas.FindAsync(id);
             if (entity == null) throw new DataNotFoundException("No se encontró el alimento o bebida con el ID especificado.");
 
             return _mapper.Map<AlimentoBebida,AlimentoBebidaDTO>(entity);
@@ -106,7 +106,7 @@ namespace InventarioAPI.Services
         public async Task<IEnumerable<AlimentoBebidaDTO>> ObtenerTodos()
         {
 
-            var result= await _iventarioDbContext.AlimentosBebidas.ToListAsync();
+            var result= await _inventarioDbContext.AlimentoBebidas.ToListAsync();
 
             return _mapper.Map<IEnumerable<AlimentoBebidaDTO>>(result);
         }
@@ -120,12 +120,12 @@ namespace InventarioAPI.Services
         {
             ValidarId(id);
 
-            var entity = await _iventarioDbContext.AlimentosBebidas.FindAsync(id);
+            var entity = await _inventarioDbContext.AlimentoBebidas.FindAsync(id);
             if (entity == null) throw new DataNotFoundException("No se encontró el alimento o bebida con el ID especificado.");
 
-            entity.Estatus = nuevoEstatus ? AlimentoBebeidaEstatus.Activo : AlimentoBebeidaEstatus.Inactivo;
+            entity.Estatus = nuevoEstatus ? true: false;
 
-            await _iventarioDbContext.SaveChangesAsync();
+            await _inventarioDbContext.SaveChangesAsync();
             return true;
         }
         /// <summary>
