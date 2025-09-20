@@ -25,6 +25,7 @@ public partial class InventarioDbContext : DbContext
     {
         modelBuilder.Entity<AlimentoBebida>(entity =>
         {
+            entity.ToTable("AlimentoBebida");
             entity.HasKey(e => e.Id).HasName("PK__Alimento__3214EC07DEC27039");
 
             entity.Property(e => e.Nombre).HasMaxLength(200);

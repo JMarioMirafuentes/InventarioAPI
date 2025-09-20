@@ -1,0 +1,52 @@
+<form [formGroup]="recordForm" style="margin: 1rem" (ngSubmit)="submit()">
+  <h4 style="margin-left: 1rem">{{ title }}</h4>
+  <br />
+  <mat-divider> </mat-divider>
+  <br />
+  <mat-dialog-content>
+    <div class="container">
+      <div class="row">
+        <mat-form-field appearance="outline" class="col-md-12">
+          <mat-label>Nombre :</mat-label>
+
+          <input matInput formControlName="nombre" class="col-md-12" />
+          <mat-error *ngIf="recordForm.get('nombre')?.hasError('required')"
+            >Este campo es obligatorio</mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="col-md-12">
+          <mat-label>Descripción :</mat-label>
+          <input matInput formControlName="descripcion" class="col-md-12" />
+          <mat-error *ngIf="recordForm.get('descripcion')?.hasError('required')"
+            >Este campo es obligatorio</mat-error
+          >
+        </mat-form-field>
+        <div class="col-md-12 mt-2">
+          <mat-checkbox formControlName="estatus"> Activo </mat-checkbox>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-divider> </mat-divider>
+  <mat-dialog-actions align="center">
+    <button
+      type="submit"
+      [disabled]="!recordForm.valid"
+      mat-raised-button
+      class="mt-3"
+      color="primary"
+    >
+      Guardar
+    </button>
+    <button
+      type="button"
+      mat-raised-button
+      class="mt-3"
+      color="accent"
+      (click)="Close()"
+    >
+      Cancelar
+    </button>
+  </mat-dialog-actions>
+</form>

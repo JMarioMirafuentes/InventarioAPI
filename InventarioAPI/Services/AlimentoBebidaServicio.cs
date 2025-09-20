@@ -20,7 +20,7 @@ namespace InventarioAPI.Services
         /// <summary>
         /// Constructor del servicio de Alimentos y Bebidas.
         /// </summary>
-        /// <param name="iventarioDbContext"></param>
+        /// <param name="inventarioDbContext"></param>
         /// <param name="mapper"></param>
         public AlimentoBebidaServicio(InventarioDbContext inventarioDbContext, IMapper mapper)
         {
@@ -71,7 +71,7 @@ namespace InventarioAPI.Services
         public async Task<AlimentoBebidaDTO> GuardarAlimentoBebida(AlimentoBebida dto)
         {
 
-            ValidarId(dto.Id);
+            //ValidarId(dto.Id);
 
             if (string.IsNullOrWhiteSpace(dto.Nombre))
                 throw new ValidationException("El campo 'Nombre' es obligatorio y no puede estar vacío.");

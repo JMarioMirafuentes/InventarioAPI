@@ -1,0 +1,165 @@
+<div class="row mt-5">
+  <h4>Catalogo de alimentos y bebidas</h4>
+  <mat-divider></mat-divider>
+</div>
+<br />
+<div class="row mt-2">
+  <div class="col-lg-2 col-12">
+    <button
+      type="button"
+      mat-raised-button
+      color="primary"
+      class="btn-text mt-3"
+      (click)="add()"
+    >
+      <mat-icon>add</mat-icon> Nuevo Fondo
+    </button>
+  </div>
+</div>
+<br />
+
+<br />
+<mat-divider></mat-divider>
+<div class="col-md-12">
+  <table mat-table class="table mb-0" [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <th
+        mat-header-cell
+        class="table__header table__cell-id"
+        *matHeaderCellDef
+      >
+        ID
+      </th>
+      <td mat-cell class="table__cell table__cell-id" *matCellDef="let row">
+        {{ row.idFondo }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="capitulo">
+      <th
+        mat-header-cell
+        class="table__header table__cell-name"
+        *matHeaderCellDef
+      >
+        Cantidad
+      </th>
+      <td mat-cell class="table__cell table__cell-name" *matCellDef="let row">
+        {{ row.cantidad | currency : "MXN" : "symbol" }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="codigo">
+      <th
+        mat-header-cell
+        class="table__header table__cell-name"
+        *matHeaderCellDef
+      >
+        Año
+      </th>
+      <td mat-cell class="table__cell table__cell-name" *matCellDef="let row">
+        {{ row.getAnio() }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="nombre">
+      <th
+        mat-header-cell
+        class="table__header table__cell-name"
+        *matHeaderCellDef
+      >
+        Mes
+      </th>
+      <td mat-cell class="table__cell table__cell-name" *matCellDef="let row">
+        {{ row.mesNombre }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="titulo">
+      <th
+        mat-header-cell
+        class="table__header table__cell-name"
+        *matHeaderCellDef
+      >
+        Titulo
+      </th>
+      <td mat-cell class="table__cell table__cell-name" *matCellDef="let row">
+        {{ row.titulo }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="tipo">
+      <th
+        mat-header-cell
+        class="table__header table__cell-name"
+        *matHeaderCellDef
+      >
+        Tipo de Fondo
+      </th>
+      <td mat-cell class="table__cell table__cell-name" *matCellDef="let row">
+        {{ row.nombreFondo }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="acciones">
+      <th
+        mat-header-cell
+        class="table__header table__cell--actions d-flex justify-content-center pt-5"
+        *matHeaderCellDef
+      >
+        Acciones
+      </th>
+      <td
+        mat-cell
+        class="table__cell table__cell--actions"
+        *matCellDef="let row; let index = index"
+      >
+        <div class="d-flex justify-content-center">
+          <button mat-button matTooltip="Editar" (click)="edit(row)">
+            <mat-icon class="edit__icon">edit</mat-icon>
+          </button>
+          <button
+            mat-button
+            matTooltip="Eliminar"
+            (click)="deleteByConfimation(row)"
+          >
+            <mat-icon class="delete__icon">delete_forever</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+    <tr
+      mat-header-row
+      *matHeaderRowDef="[
+        'id',
+        'titulo',
+        'tipo',
+        'codigo',
+        'nombre',
+        'capitulo',
+        'acciones'
+      ]"
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="
+        let row;
+        columns: [
+          'id',
+          'titulo',
+          'tipo',
+          'codigo',
+          'nombre',
+          'capitulo',
+          'acciones'
+        ]
+      "
+    ></tr>
+  </table>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    aria-label="Seleccione página"
+  >
+  </mat-paginator>
+
+  <ng-template>
+    <p class="empty-table mt-4">No hay datos para mostrar</p>
+  </ng-template>
+</div>

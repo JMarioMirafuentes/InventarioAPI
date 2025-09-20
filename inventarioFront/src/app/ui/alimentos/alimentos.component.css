@@ -1,0 +1,55 @@
+/* ====== Encabezado ====== */
+h4 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* ====== Tabla ====== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table__header {
+  font-weight: 600;
+  padding: 12px;
+  text-align: center;
+}
+
+.table__cell {
+  padding: 10px 12px;
+  text-align: center;
+  border-bottom: 1px solid #e0e0e0; /* gris claro base */
+  font-size: 0.9rem;
+}
+
+/* ====== Acciones ====== */
+.table__cell--actions {
+  text-align: center;
+}
+
+.edit__icon,
+.delete__icon {
+  transition: transform 0.2s;
+}
+
+.edit__icon:hover,
+.delete__icon:hover {
+  transform: scale(1.2);
+}
+
+/* ====== Mensaje tabla vacía ====== */
+.empty-table {
+  text-align: center;
+  font-style: italic;
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+/* ====== Botón Nuevo Fondo ====== */
+.btn-text {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  padding: 8px 16px;
+}

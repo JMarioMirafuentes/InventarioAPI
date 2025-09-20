@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using InventarioAPI.Dtos;
+using InventarioAPI.Helpers.Utils;
 using InventarioAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventarioAPI.Services
 {
@@ -20,6 +23,15 @@ namespace InventarioAPI.Services
             _inventarioDbContext = inventarioDbContext;
             _mapper = mapper;
         }
-
+        public async Task<bool> ActualizarAlimentoBebida(LoginDTO dto)
+        {
+            var usuario = await _inventarioDbContext
+           .GetUsuarioPorLogin(dto.Login)   
+           .FirstOrDefaultAsync();          
+            if (usuario == null)
+                return false;
+            bool valido = PasswordHelper.VerifyPassword(dto.Contrasenia, usuario.ContraseniaHash, usuario.ContraseniaSalt);
+            return valido;
+        }
     }
 }
