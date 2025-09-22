@@ -12,4 +12,7 @@ export class AlertDialogComponent implements OnInit {
     public data: { title: string; message: string; type: string }
   ) {}
   ngOnInit(): void {}
+  onClose(result: boolean) {
+    this.dialogRef.close(result);
+  }
 }

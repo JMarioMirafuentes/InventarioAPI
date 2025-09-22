@@ -1,1 +1,50 @@
-<p>login works!</p>
+<div class="login-wrapper">
+  <div class="right-panel">
+    <form [formGroup]="userRecordForm" (ngSubmit)="submit()" class="login-form">
+      <h2><strong>Inicia sesión</strong></h2>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre del usuario :</mat-label>
+        <input
+          matInput
+          (input)="removeSpaces('login')"
+          formControlName="login"
+        />
+        <mat-error *ngIf="userRecordForm.get('login')?.hasError('required')">
+          Este campo es obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input
+          matInput
+          (input)="removeSpaces('contrasenia')"
+          type="password"
+          formControlName="contrasenia"
+        />
+        <mat-error
+          *ngIf="userRecordForm.get('contrasenia')?.hasError('required')"
+        >
+          Este campo es obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <div class="alert alert-danger" role="alert" *ngIf="noAutorizado">
+        Usuario o contraseña incorrectos, o el usuario no esta activo. Intenta
+        nuevamente.
+      </div>
+
+      <div class="button-group">
+        <button
+          [disabled]="!userRecordForm.valid"
+          type="submit"
+          mat-raised-button
+          color="primary"
+        >
+          Ingresar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

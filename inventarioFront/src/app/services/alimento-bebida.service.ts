@@ -38,4 +38,13 @@ export class AlimentoBebidaService {
       environment.api.concat(`/AlimentosBebidas/${idAlimentoBebidaDTO}`)
     );
   }
+
+  changeEstatus(
+    body: AlimentoBebidaDTO
+  ): Observable<Response<AlimentoBebidaDTO>> {
+    return this.http.patch<Response<AlimentoBebidaDTO>>(
+      environment.api.concat(`/AlimentosBebidas/CambiarEstatus`),
+      body
+    );
+  }
 }

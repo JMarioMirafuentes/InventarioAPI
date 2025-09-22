@@ -1,12 +1,12 @@
 <div class="home-container">
-  <h1>Bienvenido al sistema</h1>
+  <h1 *ngIf="loginService.autorizado">Bienvenido al sistema</h1>
   <nav>
-    <ul>
+    <ul *ngIf="loginService.autorizado">
       <li>
         <a routerLink="/{{ ROUTES.TABLE }}"> Alimentos y Bebidas</a>
       </li>
       <li>
-        <a routerLink="/{{ ROUTES.LOGIN }}"> Salir</a>
+        <a (click)="logOut()" routerLink="/{{ ROUTES.LOGIN }}"> Salir</a>
       </li>
     </ul>
   </nav>

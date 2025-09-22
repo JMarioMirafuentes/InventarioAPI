@@ -7,8 +7,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 export enum ModalTitle {
-  NEW = 'Agregar Fondo.',
-  EDIT = 'Editar Fondo.',
+  NEW = 'Agregar alimento o bebida.',
+  EDIT = 'Editar alimento o bebida.',
 }
 @Component({
   selector: 'app-modal-alimentos',
@@ -38,7 +38,7 @@ export class ModalAlimentosComponent implements OnInit {
     this.recordForm = this.formBuilder.group({
       nombre: [null, [Validators.required]],
       descripcion: [null, [Validators.required]],
-      estatus: [null],
+      estatus: [true],
     });
   }
   ngOnInit(): void {
@@ -79,7 +79,7 @@ export class ModalAlimentosComponent implements OnInit {
         if (response.success) {
           AlertService.confirm(
             'Información registrada',
-            'El fondo se ha modificado correctamente'
+            'El registro se ha modificado correctamente'
           );
           this.ref.close(true);
         }
@@ -89,14 +89,14 @@ export class ModalAlimentosComponent implements OnInit {
         if (response.success) {
           AlertService.confirm(
             'Información registrada',
-            'El fondo se ha creado correctamente'
+            'El registro se ha creado correctamente'
           );
           this.ref.close(true);
         }
       });
     }
   }
-  Close(): void {
+  close(): void {
     this.closeModalByConfimation();
   }
   private closeModalByConfimation(): void {
@@ -107,13 +107,12 @@ export class ModalAlimentosComponent implements OnInit {
     AlertService.confirm(
       'Alerta',
       '¿Está seguro de que desea salir? Los datos ingresados no serán guardados.'
-    );
-    // ).subscribe((result) => {
-    //   if (!result || !result.isConfirmed) {
-    //     return;
-    //   }
-    //   this.ref.close();
-    // });
+    ).subscribe((result) => {
+      if (!result) {
+        return;
+      }
+      this.ref.close();
+    });
   }
 
   private trackingStatusForm(): void {

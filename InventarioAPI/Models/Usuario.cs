@@ -11,7 +11,7 @@ public partial class Usuario
 
     public string Nombre { get; set; } = null!;
 
-    public byte[] ContraseniaHash { get; set; } = null!;
+    public string ContraseniaHash { get; set; } = null!;
 
-    public byte[] ContraseniaSalt { get; set; } = null!;
+    public string ContraseniaSalt { get; set; } = null!;
 }

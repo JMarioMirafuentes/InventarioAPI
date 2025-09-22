@@ -4,23 +4,36 @@ namespace InventarioAPI.Helpers.Utils
 {
     public class PasswordHelper
     {
-        public static (byte[] hash, byte[] salt) HashPassword(string password)
+        /// <summary>
+        /// Metodo que verifica mediante un algoritmo la contraseña encirptada
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="storedHash"></param>
+        /// <param name="storedSalt"></param>
+        /// <returns></returns>
+        public static bool VerifyPassword(string password, string storedHash, string storedSalt)
         {
-            using var rng = RandomNumberGenerator.Create();
-            byte[] salt = new byte[16];
-            rng.GetBytes(salt);
-
-            using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000, HashAlgorithmName.SHA256);
-            byte[] hash = pbkdf2.GetBytes(32);
-
-            return (hash, salt);
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(Convert.FromBase64String(storedSalt)))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                return Convert.ToBase64String(computedHash) == storedHash;
+            }
+        }
+        /// <summary>
+        /// Metodo para crear la contraseña encirptada
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="passwordHash"></param>
+        /// <param name="passwordSalt"></param>
+        public static void CreatePasswordHash(string password, out string passwordHash, out string passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = Convert.ToBase64String(hmac.Key);
+                var hash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                passwordHash = Convert.ToBase64String(hash);
+            }
         }
 
-        public static bool VerifyPassword(string password, byte[] hash, byte[] salt)
-        {
-            using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000, HashAlgorithmName.SHA256);
-            byte[] hashToCheck = pbkdf2.GetBytes(32);
-            return CryptographicOperations.FixedTimeEquals(hashToCheck, hash);
-        }
     }
 }

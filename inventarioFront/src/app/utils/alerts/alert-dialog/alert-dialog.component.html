@@ -1,7 +1,44 @@
-<h2 mat-dialog-title [ngClass]="data.type">{{ data.title }}</h2>
+<h2 mat-dialog-title>{{ data.title }}</h2>
 <mat-dialog-content>
   <p>{{ data.message }}</p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close cdkFocusInitial>Aceptar</button>
+  <ng-container [ngSwitch]="data.type">
+    <button *ngSwitchCase="'confirm'" mat-button (click)="onClose(false)">
+      Cancelar
+    </button>
+    <button
+      *ngSwitchCase="'confirm'"
+      mat-raised-button
+      color="primary"
+      (click)="onClose(true)"
+    >
+      Aceptar
+    </button>
+
+    <button
+      *ngSwitchCase="'error'"
+      mat-raised-button
+      color="warn"
+      (click)="onClose(true)"
+    >
+      Ok
+    </button>
+    <button
+      *ngSwitchCase="'warning'"
+      mat-raised-button
+      color="accent"
+      (click)="onClose(true)"
+    >
+      Ok
+    </button>
+    <button
+      *ngSwitchCase="'success'"
+      mat-raised-button
+      color="primary"
+      (click)="onClose(true)"
+    >
+      Ok
+    </button>
+  </ng-container>
 </mat-dialog-actions>

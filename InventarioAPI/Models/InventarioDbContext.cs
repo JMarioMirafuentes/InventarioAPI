@@ -39,8 +39,8 @@ public partial class InventarioDbContext : DbContext
 
             entity.HasIndex(e => e.Login, "UQ__Usuario__5E55825B7E0391DF").IsUnique();
 
-            entity.Property(e => e.ContraseniaHash).HasMaxLength(256);
-            entity.Property(e => e.ContraseniaSalt).HasMaxLength(128);
+            entity.Property(e => e.ContraseniaHash).HasMaxLength(200);
+            entity.Property(e => e.ContraseniaSalt).HasMaxLength(200);
             entity.Property(e => e.Login).HasMaxLength(100);
             entity.Property(e => e.Nombre).HasMaxLength(200);
         });

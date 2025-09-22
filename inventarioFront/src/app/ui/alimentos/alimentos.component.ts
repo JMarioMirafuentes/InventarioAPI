@@ -20,8 +20,8 @@ export class AlimentosComponent implements OnInit {
   selection: SelectionModel<AlimentoBebidaDTO>;
 
   constructor(
-    private readonly modalFondoService: ModalAlimentosService,
-    private readonly fondoService: AlimentoBebidaService
+    private readonly modalAlimentosService: ModalAlimentosService,
+    private readonly alimentoBebidaService: AlimentoBebidaService
   ) {
     this.data = [];
     this.dataSource = new MatTableDataSource<AlimentoBebidaDTO>([]);
@@ -33,7 +33,7 @@ export class AlimentosComponent implements OnInit {
   }
 
   private getAll(): void {
-    this.fondoService.getAll().subscribe((response) => {
+    this.alimentoBebidaService.getAll().subscribe((response) => {
       if (response.success) {
         this.data = response.data.map((usuario) =>
           new AlimentoBebidaDTO().deserialize(usuario)
@@ -43,39 +43,68 @@ export class AlimentosComponent implements OnInit {
     });
   }
 
-  deleteByConfimation(codigo: AlimentoBebidaDTO): void {
-    AlertService.confirm('Eliminar Código', `¿Deseas eliminar el código?`);
-    // .subscribe(
-    //   (result) => {
-    //     if (!result || !result.isConfirmed) {
-    //       return;
-    //     }
-    //     this.fondoService.deleteFondo(codigo.idFondo).subscribe((response) => {
-    //       this.getAll();
-    //       if (response.success) {
-    //         Alert.success(
-    //           'Código Eliminado',
-    //           'El código fue eliminado correctamente'
-    //         );
-    //       }
-    //     });
-    //   }
+  deleteByConfimation(registro: AlimentoBebidaDTO): void {
+    AlertService.confirm(
+      'Eliminar registro',
+      `¿Deseas eliminar el registro ?`
+    ).subscribe((result) => {
+      if (!result) {
+        return;
+      }
+      this.alimentoBebidaService.delete(registro.id).subscribe((response) => {
+        this.getAll();
+        if (response.success) {
+          AlertService.success(
+            'Registro Eliminado',
+            'El registro fue eliminado correctamente'
+          );
+        }
+      });
+    });
   }
 
   add(): void {
-    this.modalFondoService
+    this.modalAlimentosService
       .open()
       .afterClosed()
       .subscribe((res) => {
         this.getAll();
       });
   }
-  edit(usuario: AlimentoBebidaDTO) {
-    this.modalFondoService
-      .open({ data: usuario })
+  edit(registro: AlimentoBebidaDTO) {
+    this.modalAlimentosService
+      .open({ data: registro })
       .afterClosed()
       .subscribe((res) => {
         this.getAll();
       });
+  }
+
+  public changeCheck(registro: AlimentoBebidaDTO): void {
+    if (registro.estatus) {
+      registro.estatus = false;
+    } else {
+      registro.estatus = true;
+    }
+    AlertService.confirm(
+      'Cambiar estatus de usuario',
+      `¿Deseas cambiar el estatus del usuario?`
+    ).subscribe((result) => {
+      if (!result) {
+        this.getAll();
+        return;
+      }
+      this.alimentoBebidaService
+        .changeEstatus(registro)
+        .subscribe((response) => {
+          if (response.success) {
+            AlertService.success(
+              'Usuario actualizado',
+              'El usuario fue actualizado correctamente'
+            );
+            this.getAll();
+          }
+        });
+    });
   }
 }

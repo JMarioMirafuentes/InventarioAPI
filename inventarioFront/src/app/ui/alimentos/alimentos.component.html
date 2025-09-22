@@ -12,7 +12,7 @@
       class="btn-text mt-3"
       (click)="add()"
     >
-      <mat-icon>add</mat-icon> Nuevo Fondo
+      <mat-icon>add</mat-icon> Nuevo alimento o bebida
     </button>
   </div>
 </div>
@@ -31,33 +31,7 @@
         ID
       </th>
       <td mat-cell class="table__cell table__cell-id" *matCellDef="let row">
-        {{ row.idFondo }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="capitulo">
-      <th
-        mat-header-cell
-        class="table__header table__cell-name"
-        *matHeaderCellDef
-      >
-        Cantidad
-      </th>
-      <td mat-cell class="table__cell table__cell-name" *matCellDef="let row">
-        {{ row.cantidad | currency : "MXN" : "symbol" }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="codigo">
-      <th
-        mat-header-cell
-        class="table__header table__cell-name"
-        *matHeaderCellDef
-      >
-        Año
-      </th>
-      <td mat-cell class="table__cell table__cell-name" *matCellDef="let row">
-        {{ row.getAnio() }}
+        {{ row.id }}
       </td>
     </ng-container>
 
@@ -67,36 +41,44 @@
         class="table__header table__cell-name"
         *matHeaderCellDef
       >
-        Mes
+        Nombre
       </th>
       <td mat-cell class="table__cell table__cell-name" *matCellDef="let row">
-        {{ row.mesNombre }}
+        {{ row.nombre }}
       </td>
     </ng-container>
-    <ng-container matColumnDef="titulo">
+
+    <ng-container matColumnDef="descripcion">
       <th
         mat-header-cell
         class="table__header table__cell-name"
         *matHeaderCellDef
       >
-        Titulo
+        Descripción
       </th>
       <td mat-cell class="table__cell table__cell-name" *matCellDef="let row">
-        {{ row.titulo }}
+        {{ row.descripcion }}
       </td>
     </ng-container>
-    <ng-container matColumnDef="tipo">
+
+    <ng-container matColumnDef="estatus">
       <th
         mat-header-cell
         class="table__header table__cell-name"
         *matHeaderCellDef
       >
-        Tipo de Fondo
+        Estatus
       </th>
       <td mat-cell class="table__cell table__cell-name" *matCellDef="let row">
-        {{ row.nombreFondo }}
+        <mat-checkbox
+          class="d-block"
+          (change)="changeCheck(row)"
+          [checked]="row.estatus"
+        >
+        </mat-checkbox>
       </td>
     </ng-container>
+
     <ng-container matColumnDef="acciones">
       <th
         mat-header-cell
@@ -126,29 +108,13 @@
     </ng-container>
     <tr
       mat-header-row
-      *matHeaderRowDef="[
-        'id',
-        'titulo',
-        'tipo',
-        'codigo',
-        'nombre',
-        'capitulo',
-        'acciones'
-      ]"
+      *matHeaderRowDef="['id', 'nombre', 'descripcion', 'estatus', 'acciones']"
     ></tr>
     <tr
       mat-row
       *matRowDef="
         let row;
-        columns: [
-          'id',
-          'titulo',
-          'tipo',
-          'codigo',
-          'nombre',
-          'capitulo',
-          'acciones'
-        ]
+        columns: ['id', 'nombre', 'descripcion', 'estatus', 'acciones']
       "
     ></tr>
   </table>

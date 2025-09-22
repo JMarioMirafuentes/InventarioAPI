@@ -175,13 +175,13 @@ namespace InventarioAPI.Controllers
         /// <param name="idAlimentoBebida">Identificador del alimendo o bebida</param>
         /// <param name="nuevoEstatus">Nuevo estatus del alimento o bebida</param>
         /// <returns>Resultado del método</returns>
-        [HttpPatch("{idAlimentoBebida}/CambiarEstatus")]
-        public async Task<ActionResult<ApiResponse<bool>>> CambiarEstatusAlimentoBebida(int idAlimentoBebida, [FromQuery] bool nuevoEstatus)
+        [HttpPatch("CambiarEstatus")]
+        public async Task<ActionResult<ApiResponse<bool>>> CambiarEstatusAlimentoBebida([FromBody] AlimentoBebidaDTO dto)
         {
             try
             {
-                _logger.LogInformation("Se solicitó cambiar estatus del alimento/bebida con ID {idAlimentoBebida} a {nuevoEstatus}", idAlimentoBebida, nuevoEstatus);
-                var resultado = await _alimentoBebidaServicio.CambiarEstatusAlimentoBebidaId(idAlimentoBebida, nuevoEstatus);
+                _logger.LogInformation("Se solicitó cambiar estatus del alimento/bebida con ID {idAlimentoBebida} a {nuevoEstatus}", dto.Id, dto.Estatus);
+                var resultado = await _alimentoBebidaServicio.CambiarEstatusAlimentoBebidaId(dto.Id, dto.Estatus);
                 return Ok(new ApiResponse<bool>(200, "Estatus actualizado correctamente", true, resultado));
             }
             catch (ValidationException ex)
