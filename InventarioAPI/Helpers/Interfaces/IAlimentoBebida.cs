@@ -8,11 +8,11 @@ namespace InventarioAPI.Helpers.Interfaces
     /// </summary>
     public interface IAlimentoBebida
     {
-        Task<IEnumerable<AlimentoBebidaDTO>> ObtenerTodos();
-        Task<AlimentoBebidaDTO?> ObtenerAlimentoBebidaId(int id);
-        Task<AlimentoBebidaDTO> GuardarAlimentoBebida(AlimentoBebida dto);
-        Task<bool> ActualizarAlimentoBebida(AlimentoBebida dto);
-        Task<bool> EliminarAlimentoBebidaId(int id);
-        Task<bool> CambiarEstatusAlimentoBebidaId(int id, bool nuevoEstatus);
+        Task<IEnumerable<AlimentoBebidaDTO>> All();
+        Task<AlimentoBebidaDTO?> GetId(int id);
+        Task<AlimentoBebidaDTO> Save(AlimentoBebida dto);
+        Task<bool> Update(AlimentoBebida dto);
+        Task<bool> Delete(int id);
+        Task<bool> Change(int id, bool nuevoEstatu);
     }
 }

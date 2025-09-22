@@ -30,12 +30,12 @@ namespace InventarioAPI.Controllers
         /// Obtiene todos los alimentos y bebidas del inventario.
         /// </summary>
         [HttpGet]
-        public async Task<ActionResult<ApiResponse<IEnumerable<AlimentoBebidaDTO>>>> ObtenerTodos()
+        public async Task<ActionResult<ApiResponse<IEnumerable<AlimentoBebidaDTO>>>> All()
         {
             try
             {
                 _logger.LogInformation("Se solicitó obtener todos los alimentos y bebidas.");
-                var lista = await _alimentoBebidaServicio.ObtenerTodos();
+                var lista = await _alimentoBebidaServicio.All();
                 return Ok(new ApiResponse<IEnumerable<AlimentoBebidaDTO>>(200, "OK", true, lista));
             }
             catch (Exception ex)
@@ -51,12 +51,12 @@ namespace InventarioAPI.Controllers
         /// <param name="idAlimentoBebida">Identificador del alimendo o bebida</param>
         /// <returns>Objeto dto</returns>
         [HttpGet("{idAlimentoBebida}")]
-        public async Task<ActionResult<ApiResponse<AlimentoBebidaDTO>>> ObtenerAlimentoBebidaId(int idAlimentoBebida)
+        public async Task<ActionResult<ApiResponse<AlimentoBebidaDTO>>> GetId(int idAlimentoBebida)
         {
             try
             {
                 _logger.LogInformation("Se solicitó obtener el alimento/bebida con ID {idAlimentoBebida}", idAlimentoBebida);
-                var item = await _alimentoBebidaServicio.ObtenerAlimentoBebidaId(idAlimentoBebida);
+                var item = await _alimentoBebidaServicio.GetId(idAlimentoBebida);
                 return Ok(new ApiResponse<AlimentoBebidaDTO>(200, "OK", true, item));
             }
             catch (ValidationException ex)
@@ -82,12 +82,12 @@ namespace InventarioAPI.Controllers
         /// <param name="dto">Objeto nuevo de alimento o bebida</param>
         /// <returns>Objeto dto</returns>
         [HttpPost]
-        public async Task<ActionResult<ApiResponse<AlimentoBebidaDTO>>> GuardarAlimentoBebida([FromBody] AlimentoBebidaDTO dto)
+        public async Task<ActionResult<ApiResponse<AlimentoBebidaDTO>>> post([FromBody] AlimentoBebidaDTO dto)
         {
             try
             {
                 _logger.LogInformation("Se solicitó guardar un nuevo alimento/bebida: {Nombre}", dto.Nombre);
-                var nuevo = await _alimentoBebidaServicio.GuardarAlimentoBebida(_mapper.Map<AlimentoBebida>(dto));
+                var nuevo = await _alimentoBebidaServicio.Save(_mapper.Map<AlimentoBebida>(dto));
                 return Ok(new ApiResponse<AlimentoBebidaDTO>(200, "Guardado correctamente", true, nuevo));
             }
             catch (ValidationException ex)
@@ -113,12 +113,12 @@ namespace InventarioAPI.Controllers
         /// /// <param name="dto">Objeto nuevo de alimento o bebida</param>
         /// <returns>Objeto dto</returns>
         [HttpPut]
-        public async Task<ActionResult<ApiResponse<bool>>> ActualizarAlimentoBebida([FromBody] AlimentoBebidaDTO dto)
+        public async Task<ActionResult<ApiResponse<bool>>> put([FromBody] AlimentoBebidaDTO dto)
         {
             try
             {
                 _logger.LogInformation("Se solicitó actualizar alimento/bebida con ID {Id}", dto.Id);
-                var resultado = await _alimentoBebidaServicio.ActualizarAlimentoBebida(_mapper.Map<AlimentoBebida>(dto));
+                var resultado = await _alimentoBebidaServicio.Update(_mapper.Map<AlimentoBebida>(dto));
                 return Ok(new ApiResponse<bool>(200, "Actualizado correctamente", true, resultado));
             }
             catch (ValidationException ex)
@@ -144,12 +144,12 @@ namespace InventarioAPI.Controllers
         /// <param name="idAlimentoBebida">Identificador del alimendo o bebida</param>
         /// <returns>Resultado del método</returns>
         [HttpDelete("{idAlimentoBebida}")]
-        public async Task<ActionResult<ApiResponse<bool>>> BorrarAlimentoBebidaId(int idAlimentoBebida)
+        public async Task<ActionResult<ApiResponse<bool>>> delete(int idAlimentoBebida)
         {
             try
             {
                 _logger.LogInformation("Se solicitó eliminar alimento/bebida con ID {idAlimentoBebida}", idAlimentoBebida);
-                var resultado = await _alimentoBebidaServicio.EliminarAlimentoBebidaId(idAlimentoBebida);
+                var resultado = await _alimentoBebidaServicio.Delete(idAlimentoBebida);
                 return Ok(new ApiResponse<bool>(200, "Eliminado correctamente", true, resultado));
             }
             catch (ValidationException ex)
@@ -176,12 +176,12 @@ namespace InventarioAPI.Controllers
         /// <param name="nuevoEstatus">Nuevo estatus del alimento o bebida</param>
         /// <returns>Resultado del método</returns>
         [HttpPatch("CambiarEstatus")]
-        public async Task<ActionResult<ApiResponse<bool>>> CambiarEstatusAlimentoBebida([FromBody] AlimentoBebidaDTO dto)
+        public async Task<ActionResult<ApiResponse<bool>>> Change([FromBody] AlimentoBebidaDTO dto)
         {
             try
             {
                 _logger.LogInformation("Se solicitó cambiar estatus del alimento/bebida con ID {idAlimentoBebida} a {nuevoEstatus}", dto.Id, dto.Estatus);
-                var resultado = await _alimentoBebidaServicio.CambiarEstatusAlimentoBebidaId(dto.Id, dto.Estatus);
+                var resultado = await _alimentoBebidaServicio.Change(dto.Id, dto.Estatus);
                 return Ok(new ApiResponse<bool>(200, "Estatus actualizado correctamente", true, resultado));
             }
             catch (ValidationException ex)

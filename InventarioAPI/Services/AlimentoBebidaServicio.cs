@@ -32,7 +32,7 @@ namespace InventarioAPI.Services
         /// </summary>
         /// <param name="dto"></param>
         /// <returns>Devuelve verdadero o falso segun su resultado</returns>
-        public async Task<bool> ActualizarAlimentoBebida(AlimentoBebida dto)
+        public async Task<bool> Update(AlimentoBebida dto)
         {
             ValidarId(dto.Id);
             if (string.IsNullOrWhiteSpace(dto.Nombre))
@@ -52,7 +52,7 @@ namespace InventarioAPI.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<bool> EliminarAlimentoBebidaId(int id)
+        public async Task<bool> Delete(int id)
         {
             ValidarId(id);
 
@@ -68,7 +68,7 @@ namespace InventarioAPI.Services
         /// </summary>
         /// <param name="dto"></param>
         /// <returns>Devuelve verdadero o falso segun su resultado</returns>
-        public async Task<AlimentoBebidaDTO> GuardarAlimentoBebida(AlimentoBebida dto)
+        public async Task<AlimentoBebidaDTO> Save(AlimentoBebida dto)
         {
 
             //ValidarId(dto.Id);
@@ -90,7 +90,7 @@ namespace InventarioAPI.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<AlimentoBebidaDTO?> ObtenerAlimentoBebidaId(int id)
+        public async Task<AlimentoBebidaDTO?> GetId(int id)
         {
             ValidarId(id);
 
@@ -103,7 +103,7 @@ namespace InventarioAPI.Services
         /// Obtiene todos los alimentos y bebidas.
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<AlimentoBebidaDTO>> ObtenerTodos()
+        public async Task<IEnumerable<AlimentoBebidaDTO>> All()
         {
 
             var result= await _inventarioDbContext.AlimentoBebidas.ToListAsync();
@@ -116,7 +116,7 @@ namespace InventarioAPI.Services
         /// <param name="id"></param>
         /// <param name="nuevoEstatus"></param>
         /// <returns></returns>
-        public async Task<bool> CambiarEstatusAlimentoBebidaId(int id, bool nuevoEstatus)
+        public async Task<bool> Change(int id, bool nuevoEstatus)
         {
             ValidarId(id);
 
