@@ -172,8 +172,7 @@ namespace InventarioAPI.Controllers
         /// <summary>
         /// Cambia el estatus de un alimento o bebida por su ID.
         /// </summary>
-        /// <param name="idAlimentoBebida">Identificador del alimendo o bebida</param>
-        /// <param name="nuevoEstatus">Nuevo estatus del alimento o bebida</param>
+        /// <param name="dto">Objeto para actualizar estatus</param>
         /// <returns>Resultado del método</returns>
         [HttpPatch("CambiarEstatus")]
         public async Task<ActionResult<ApiResponse<bool>>> Change([FromBody] AlimentoBebidaDTO dto)

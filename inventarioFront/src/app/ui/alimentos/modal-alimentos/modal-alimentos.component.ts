@@ -28,6 +28,7 @@ export class ModalAlimentosComponent implements OnInit {
     public readonly alimentoBebidaData: AlimentoBebidaData,
     private readonly formBuilder: FormBuilder,
     private readonly alimentoBebidaService: AlimentoBebidaService,
+    private readonly alertService: AlertService,
     private readonly ref: MatDialogRef<never>
   ) {
     this.title = ModalTitle.NEW;
@@ -65,7 +66,7 @@ export class ModalAlimentosComponent implements OnInit {
   submit(): void {
     this.recordForm.markAllAsTouched();
     if (this.recordForm.invalid) {
-      AlertService.error('', 'Verifique que los campos sean correctos');
+      this.alertService.error('', 'Verifique que los campos sean correctos');
       return;
     }
     const tmp = this.recordForm.getRawValue();
@@ -77,7 +78,7 @@ export class ModalAlimentosComponent implements OnInit {
       registro.id = this.data.id;
       this.alimentoBebidaService.update(registro).subscribe((response) => {
         if (response.success) {
-          AlertService.confirm(
+          this.alertService.confirm(
             'Información registrada',
             'El registro se ha modificado correctamente'
           );
@@ -87,7 +88,7 @@ export class ModalAlimentosComponent implements OnInit {
     } else {
       this.alimentoBebidaService.save(registro).subscribe((response) => {
         if (response.success) {
-          AlertService.confirm(
+          this.alertService.confirm(
             'Información registrada',
             'El registro se ha creado correctamente'
           );
@@ -104,15 +105,17 @@ export class ModalAlimentosComponent implements OnInit {
       this.ref.close();
       return;
     }
-    AlertService.confirm(
-      'Alerta',
-      '¿Está seguro de que desea salir? Los datos ingresados no serán guardados.'
-    ).subscribe((result) => {
-      if (!result) {
-        return;
-      }
-      this.ref.close();
-    });
+    this.alertService
+      .confirm(
+        'Alerta',
+        '¿Está seguro de que desea salir? Los datos ingresados no serán guardados.'
+      )
+      .subscribe((result) => {
+        if (!result) {
+          return;
+        }
+        this.ref.close();
+      });
   }
 
   private trackingStatusForm(): void {

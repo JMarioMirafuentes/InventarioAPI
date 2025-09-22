@@ -1,14 +1,14 @@
+import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
 import { Observable, map } from 'rxjs';
+import { AlertDialogComponent } from './alert-dialog/alert-dialog.component';
+import { AlertType } from '../enums/alert-type';
+
+@Injectable({ providedIn: 'root' })
 export class AlertService {
-  private static dialog: MatDialog;
+  constructor(private dialog: MatDialog) {}
 
-  static init(dialog: MatDialog) {
-    this.dialog = dialog;
-  }
-
-  private static openDialog(
+  private openDialog(
     title: string,
     message: string,
     type: string
@@ -18,22 +18,22 @@ export class AlertService {
       data: { title, message, type },
     });
 
-    return dialogRef.afterClosed().pipe(map((result) => !!result)); // true o false
+    return dialogRef.afterClosed().pipe(map((result) => !!result));
   }
 
-  static confirm(title: string, message: string): Observable<boolean> {
-    return this.openDialog(title, message, 'confirm');
+  confirm(title: string, message: string): Observable<boolean> {
+    return this.openDialog(title, message, AlertType.CONFIRM);
   }
 
-  static error(title: string, message: string): Observable<boolean> {
-    return this.openDialog(title, message, 'error');
+  error(title: string, message: string): Observable<boolean> {
+    return this.openDialog(title, message, AlertType.ERROR);
   }
 
-  static warning(title: string, message: string): Observable<boolean> {
-    return this.openDialog(title, message, 'warning');
+  warning(title: string, message: string): Observable<boolean> {
+    return this.openDialog(title, message, AlertType.WARNING);
   }
 
-  static success(title: string, message: string): Observable<boolean> {
-    return this.openDialog(title, message, 'success');
+  success(title: string, message: string): Observable<boolean> {
+    return this.openDialog(title, message, AlertType.SUCCESS);
   }
 }

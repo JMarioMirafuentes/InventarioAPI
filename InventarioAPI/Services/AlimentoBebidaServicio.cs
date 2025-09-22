@@ -28,6 +28,54 @@ namespace InventarioAPI.Services
             _mapper = mapper;
         }
         /// <summary>
+        /// Obtiene todos los alimentos y bebidas.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<AlimentoBebidaDTO>> All()
+        {
+
+            var result = await _inventarioDbContext.AlimentoBebidas.ToListAsync();
+
+            return _mapper.Map<IEnumerable<AlimentoBebidaDTO>>(result);
+        }
+        /// <summary>
+        /// Obtiene un alimento o bebida por su ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<AlimentoBebidaDTO?> GetId(int id)
+        {
+            ValidarId(id);
+
+            var entity = await _inventarioDbContext.AlimentoBebidas.FindAsync(id);
+            if (entity == null) throw new DataNotFoundException("No se encontró el alimento o bebida con el ID especificado.");
+
+            return _mapper.Map<AlimentoBebida, AlimentoBebidaDTO>(entity);
+        }
+        /// <summary>
+        /// Guarda un nuevo alimento o bebida con un ID específico.
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns>Devuelve verdadero o falso segun su resultado</returns>
+        public async Task<AlimentoBebidaDTO> Save(AlimentoBebida dto)
+        {
+
+            //ValidarId(dto.Id);
+
+            if (string.IsNullOrWhiteSpace(dto.Nombre))
+                throw new ValidationException("El campo 'Nombre' es obligatorio y no puede estar vacío.");
+
+            bool exists = await _inventarioDbContext.AlimentoBebidas
+                          .AnyAsync(x => x.Nombre == dto.Nombre || x.Id == dto.Id);
+            if (exists)
+                throw new AlreadyExistsException("Ya existe un alimento o bebida registrado con el mismo nombre o ID.");
+
+            _inventarioDbContext.AlimentoBebidas.Add(dto);
+            await _inventarioDbContext.SaveChangesAsync();
+            return _mapper.Map<AlimentoBebida, AlimentoBebidaDTO>(dto);
+        }
+
+        /// <summary>
         /// Actualiza un alimento o bebida por su ID.
         /// </summary>
         /// <param name="dto"></param>
@@ -63,53 +111,7 @@ namespace InventarioAPI.Services
             await _inventarioDbContext.SaveChangesAsync();
             return true;
         }
-        /// <summary>
-        /// Guarda un nuevo alimento o bebida con un ID específico.
-        /// </summary>
-        /// <param name="dto"></param>
-        /// <returns>Devuelve verdadero o falso segun su resultado</returns>
-        public async Task<AlimentoBebidaDTO> Save(AlimentoBebida dto)
-        {
-
-            //ValidarId(dto.Id);
-
-            if (string.IsNullOrWhiteSpace(dto.Nombre))
-                throw new ValidationException("El campo 'Nombre' es obligatorio y no puede estar vacío.");
-
-            bool exists = await _inventarioDbContext.AlimentoBebidas
-                          .AnyAsync(x => x.Nombre == dto.Nombre || x.Id == dto.Id);
-            if (exists)
-                throw new AlreadyExistsException("Ya existe un alimento o bebida registrado con el mismo nombre o ID.");
-
-            _inventarioDbContext.AlimentoBebidas.Add(dto);
-            await _inventarioDbContext.SaveChangesAsync();
-            return _mapper.Map<AlimentoBebida,AlimentoBebidaDTO>(dto);
-        }
-        /// <summary>
-        /// Obtiene un alimento o bebida por su ID.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<AlimentoBebidaDTO?> GetId(int id)
-        {
-            ValidarId(id);
-
-            var entity = await _inventarioDbContext.AlimentoBebidas.FindAsync(id);
-            if (entity == null) throw new DataNotFoundException("No se encontró el alimento o bebida con el ID especificado.");
-
-            return _mapper.Map<AlimentoBebida,AlimentoBebidaDTO>(entity);
-        }
-        /// <summary>
-        /// Obtiene todos los alimentos y bebidas.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<AlimentoBebidaDTO>> All()
-        {
-
-            var result= await _inventarioDbContext.AlimentoBebidas.ToListAsync();
-
-            return _mapper.Map<IEnumerable<AlimentoBebidaDTO>>(result);
-        }
+      
         /// <summary>
         /// Cambia el estatus de un alimento o bebida por su ID.
         /// </summary>

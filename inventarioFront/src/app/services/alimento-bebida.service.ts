@@ -16,7 +16,7 @@ export class AlimentoBebidaService {
     );
   }
 
-  get(idAlimentoBebidaDTO: Number): Observable<Response<AlimentoBebidaDTO>> {
+  get(idAlimentoBebidaDTO: number): Observable<Response<AlimentoBebidaDTO>> {
     return this.http.get<Response<AlimentoBebidaDTO>>(
       environment.api.concat(`/AlimentosBebidas/${idAlimentoBebidaDTO}`)
     );
@@ -33,7 +33,7 @@ export class AlimentoBebidaService {
       body
     );
   }
-  delete(idAlimentoBebidaDTO: Number): Observable<Response<AlimentoBebidaDTO>> {
+  delete(idAlimentoBebidaDTO: number): Observable<Response<AlimentoBebidaDTO>> {
     return this.http.delete<Response<AlimentoBebidaDTO>>(
       environment.api.concat(`/AlimentosBebidas/${idAlimentoBebidaDTO}`)
     );

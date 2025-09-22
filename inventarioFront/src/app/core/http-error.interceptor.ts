@@ -10,62 +10,54 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { AlertService } from '../utils/alerts/alert.service';
 
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
-  constructor(
-    private readonly dialogRef: MatDialog,
-    private readonly router: Router
-  ) {}
+  constructor(private readonly alertService: AlertService) {}
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
-      map((ev: HttpEvent<any>) => {
-        if (ev instanceof HttpResponse) {
-          const body: any = ev.body;
-
-          if (request.reportProgress) {
-            return ev;
-          }
-          if (!body.success) {
+      tap((event: HttpEvent<any>) => {
+        if (event instanceof HttpResponse) {
+          const body: any = event.body;
+          if (!body.success && !request.reportProgress) {
             throw new HttpErrorResponse({
               error: { message: body.message || 'Error inesperado' },
-              headers: ev.headers,
-              status: body.statusCode ? body.statusCode : null,
+              headers: event.headers,
+              status: body.statusCode || null,
               statusText: body.message || 'Error inesperado',
-              url: ev.url!,
+              url: event.url!,
             });
           }
         }
-        return ev;
       }),
       catchError((error: HttpErrorResponse) => {
-        if (
-          error.status === 400 ||
-          error.status === 409 ||
-          error.status === 404
-        ) {
-          AlertService.error(
-            'Error',
-            error.error ? error.error.message : 'Error inesperado'
-          );
-        } else if (error.status === 503 || error.status === 504) {
-          AlertService.warning(
-            'Error',
-            'No fue posible realiza tu petición. Favor de intentar nuevamente'
-          );
+        let message = 'Error inesperado';
+        if ([400, 404, 409].includes(error.status)) {
+          message = error.error?.message || message;
+          this.alertService.error('Error', message).subscribe();
+        } else if ([503, 504].includes(error.status)) {
+          this.alertService
+            .warning(
+              'Error',
+              'No fue posible realizar tu petición. Favor de intentar nuevamente'
+            )
+            .subscribe();
+        } else if (error.status === 0) {
+          this.alertService
+            .warning('Error', 'No hay conexión con el servidor')
+            .subscribe();
         } else {
-          console.error('Error from error interceptor', error);
-          AlertService.warning(
-            'Error',
-            error.error ? error.error.message : 'Error inesperado'
-          );
+          this.alertService
+            .warning('Error', error.error?.message || message)
+            .subscribe();
         }
-        return throwError(() => {});
+
+        return throwError(() => error);
       })
     );
   }

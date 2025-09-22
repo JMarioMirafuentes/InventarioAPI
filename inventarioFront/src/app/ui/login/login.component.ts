@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly loginService: LoginService,
+    private readonly alertService: AlertService,
     private router: Router
   ) {
     this.userRecordForm = this.formBuilder.group({
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit {
   submit() {
     this.userRecordForm.markAllAsTouched();
     if (this.userRecordForm.invalid) {
-      AlertService.error('', 'Verifique que los campos sean correctos');
+      this.alertService.error('', 'Verifique que los campos sean correctos');
       return;
     }
 

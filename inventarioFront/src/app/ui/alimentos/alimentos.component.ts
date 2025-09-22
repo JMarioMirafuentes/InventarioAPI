@@ -21,7 +21,8 @@ export class AlimentosComponent implements OnInit {
 
   constructor(
     private readonly modalAlimentosService: ModalAlimentosService,
-    private readonly alimentoBebidaService: AlimentoBebidaService
+    private readonly alimentoBebidaService: AlimentoBebidaService,
+    private readonly alertService: AlertService
   ) {
     this.data = [];
     this.dataSource = new MatTableDataSource<AlimentoBebidaDTO>([]);
@@ -44,23 +45,23 @@ export class AlimentosComponent implements OnInit {
   }
 
   deleteByConfimation(registro: AlimentoBebidaDTO): void {
-    AlertService.confirm(
-      'Eliminar registro',
-      `¿Deseas eliminar el registro ?`
-    ).subscribe((result) => {
-      if (!result) {
-        return;
-      }
-      this.alimentoBebidaService.delete(registro.id).subscribe((response) => {
-        this.getAll();
-        if (response.success) {
-          AlertService.success(
-            'Registro Eliminado',
-            'El registro fue eliminado correctamente'
-          );
+    this.alertService
+      .confirm('Eliminar registro', `¿Deseas eliminar el registro ?`)
+      .subscribe((result) => {
+        if (!result) {
+          return;
         }
+        this.alimentoBebidaService.delete(registro.id).subscribe((response) => {
+          this.getAll();
+          if (response.success) {
+            this,
+              this.alertService.success(
+                'Registro Eliminado',
+                'El registro fue eliminado correctamente'
+              );
+          }
+        });
       });
-    });
   }
 
   add(): void {
@@ -86,25 +87,27 @@ export class AlimentosComponent implements OnInit {
     } else {
       registro.estatus = true;
     }
-    AlertService.confirm(
-      'Cambiar estatus de usuario',
-      `¿Deseas cambiar el estatus del usuario?`
-    ).subscribe((result) => {
-      if (!result) {
-        this.getAll();
-        return;
-      }
-      this.alimentoBebidaService
-        .changeEstatus(registro)
-        .subscribe((response) => {
-          if (response.success) {
-            AlertService.success(
-              'Usuario actualizado',
-              'El usuario fue actualizado correctamente'
-            );
-            this.getAll();
-          }
-        });
-    });
+    this.alertService
+      .confirm('Cambiar estatus', `¿Deseas cambiar  del alimento o bebida?`)
+      .subscribe((result) => {
+        if (!result) {
+          this.getAll();
+          return;
+        }
+        this.alimentoBebidaService
+          .changeEstatus(registro)
+          .subscribe((response) => {
+            if (response.success) {
+              this.alertService.success(
+                'Registro actualizado',
+                'El alimento o bebida fue actualizado correctamente'
+              );
+              this.getAll();
+            }
+          });
+      });
+  }
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 }
